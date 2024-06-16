@@ -1,6 +1,17 @@
 import HomeLayout from '@/components/Layout/HomeLayout';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+	const [nfts, setNfts] = useState([]);
+
+	useEffect(() => {
+		const fetchNFTs = async () => {
+			//
+		};
+
+		fetchNFTs();
+	}, []);
+
 	return (
 		<HomeLayout>
 			<main id='content'>

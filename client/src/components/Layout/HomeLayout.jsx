@@ -1,10 +1,9 @@
+import { useWeb3 } from '@/context/Web3Provider';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 const HomeLayout = ({ children }) => {
-	const router = useRouter();
-	const { pathname } = router;
+	const { isConnected, connectWallet } = useWeb3();
 
 	return (
 		<div className='bg-neutral-900'>
@@ -37,11 +36,12 @@ const HomeLayout = ({ children }) => {
 							</a>
 
 							<div>
-								<a
-									className='group inline-flex items-center gap-x-2 py-2 px-3 bg-[#ff0] font-medium text-sm text-neutral-800 rounded-full focus:outline-none'
-									href='#'>
-									Connect Wallet
-								</a>
+								<div
+									className='group inline-flex items-center gap-x-2 py-2 px-3 bg-[#ff0] font-medium text-sm text-neutral-800 rounded-full focus:outline-none cursor-pointer'
+									href='#'
+									onClick={connectWallet}>
+									{isConnected ? <b>Connected</b> : <span>Connect Wallet</span>}
+								</div>
 							</div>
 						</div>
 					</div>
