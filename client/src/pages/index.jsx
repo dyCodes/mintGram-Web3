@@ -30,7 +30,7 @@ export default function Home() {
 					})
 				);
 
-				setNfts(nftURIs);
+				setNfts(nftURIs.reverse());
 				console.log(nftURIs);
 			} catch (error) {
 				console.log(error);
@@ -80,7 +80,12 @@ export default function Home() {
 				// Reset form and uploaded image
 				el.target.reset();
 				setUploadedImage(null);
+			} else {
+				swal('Error!', 'An error occurred, please try again!', 'error');
 			}
+
+			// Update Explore page
+			fetchNFTs();
 		} catch (error) {
 			console.log(error);
 			swal('Error!', 'An error occurred, please try again!', 'error');
@@ -159,27 +164,22 @@ export default function Home() {
 
 				<div id='explore' className='bg-neutral-800'>
 					<div className='max-w-5xl px-4 xl:px-0 py-24 mx-auto'>
-						<div className='max-w-3xl mb-10 lg:mb-14'>
+						<div className='max-w-3xl mb-6 lg:mb-14'>
 							<h2 className='text-white font-semibold text-2xl md:text-4xl md:leading-tight'>Explore</h2>
 							{/* <p className='mt-1 text-neutral-400'></p> */}
 						</div>
 
-						<div className=''>
-							<div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
+						<div class='grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg p-6 pt-0 lg:overflow-visible'>
+							<div class='grid grid-cols-3 gap-4'>
 								{nfts.map((nft, index) => (
-									<img
-										key={index}
-										className='w-full object-cover'
-										src={nft.metadata.image}
-										alt={nft.tokenId}
-									/>
+									<a key={index} href={nft.metadata.image} target='_blank'>
+										<img
+											class='object-cover object-top h-40 w-full rounded-lg md:h-60'
+											src={nft.metadata.image}
+											alt={nft.tokenId}
+										/>
+									</a>
 								))}
-
-								{/* <img
-									className='w-full object-cover'
-									src='https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
-									alt='Test'
-								/> */}
 							</div>
 						</div>
 					</div>
