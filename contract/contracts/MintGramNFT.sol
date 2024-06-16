@@ -6,13 +6,13 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PicNftMinter is ERC721, ERC721URIStorage, Ownable {
+contract MintGramNFT is ERC721, ERC721URIStorage, Ownable {
     uint256 private _nextTokenId;
     mapping(string => uint8) existingURIs;
 
     constructor(
         address initialOwner
-    ) ERC721("PicNftMinter", "PNFT") Ownable(initialOwner) {}
+    ) ERC721("MintGramNFT", "MGNFT") Ownable(initialOwner) {}
 
     function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _nextTokenId++;

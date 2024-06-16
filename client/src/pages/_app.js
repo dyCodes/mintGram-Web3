@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }) {
 	return (
 		<div className={font.className}>
 			<Head>
-				<title>PicMint App - Camp Network</title>
+				<title>MintGram App - Camp Network</title>
 				{/* <link rel='icon' href='/icon.png' type='image/PNG' /> */}
 			</Head>
 
