@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
+import { contractAddress } from '../../config/contract';
+import PicNftMinter from '../PicNftMinter.json';
 
 const Web3Context = createContext();
 
 export const Web3Provider = ({ children }) => {
 	const [accounts, setAccounts] = useState([]);
-	const [provider, setProvider] = useState(null);
 	const isConnected = Boolean(accounts[0]);
 
 	useEffect(() => {
@@ -18,9 +19,6 @@ export const Web3Provider = ({ children }) => {
 				if (accounts.length) setAccounts(accounts);
 				else setAccounts([]);
 			});
-
-			const provider = new ethers.BrowserProvider(window.ethereum);
-			setProvider(provider);
 		}
 	}, []);
 
@@ -33,8 +31,24 @@ export const Web3Provider = ({ children }) => {
 		setAccounts(accounts);
 	};
 
+	const getProvider = async () => {
+		if (!window.ethereum) return;
+		const provider = new ethers.BrowserProvider(window.ethereum);
+		return provider;
+	};
+
+	const getContract = async () => {
+		if (!window.ethereum) return;
+		const provider = new ethers.BrowserProvider(window.ethereum);
+
+		const signer = provider.getSigner();
+		const contract = new ethers.Contract(contractAddress, PicNftMinter, signer);
+		return contract;
+	};
+
 	return (
-		<Web3Context.Provider value={{ accounts, setAccounts, isConnected, provider, connectWallet }}>
+		<Web3Context.Provider
+			value={{ accounts, setAccounts, isConnected, getProvider, getContract, connectWallet }}>
 			{children}
 		</Web3Context.Provider>
 	);

@@ -31,7 +31,7 @@ const HomeLayout = ({ children }) => {
 							</a>
 							<a
 								className='text-sm text-white hover:text-neutral-300 md:py-4 focus:outline-none focus:text-neutral-300'
-								href='#'>
+								href='#explore'>
 								Explore
 							</a>
 
