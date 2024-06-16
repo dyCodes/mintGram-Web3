@@ -12,28 +12,29 @@ const HomeLayout = ({ children }) => {
 					className='relative max-w-[66rem] w-full bg-neutral-800 rounded-[28px] py-3 ps-5 pe-2 md:flex md:items-center md:justify-between md:py-0 mx-2 lg:mx-auto'
 					aria-label='Global'>
 					<div className='flex items-center justify-between'>
-						<a
+						<Link
 							className='flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80'
 							href='/'>
 							<img className='w-[105px]' src='/logo.png' alt='' />
-						</a>
+						</Link>
 					</div>
 
 					<div
 						id='navbar-collapse'
 						className='hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block'>
 						<div className='flex flex-col gap-y-4 gap-x-0 mt-5 md:flex-row md:items-center md:justify-end md:gap-y-0 md:gap-x-7 md:mt-0 md:ps-7'>
-							<a
+							<Link
 								className='text-sm text-white hover:text-neutral-300 md:py-4 focus:outline-none focus:text-neutral-300'
 								href='#'
 								aria-current='page'>
 								Home
-							</a>
-							<a
+							</Link>
+
+							<Link
 								className='text-sm text-white hover:text-neutral-300 md:py-4 focus:outline-none focus:text-neutral-300'
 								href='#explore'>
 								Explore
-							</a>
+							</Link>
 
 							<div>
 								<div

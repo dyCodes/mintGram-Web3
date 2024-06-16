@@ -15,22 +15,26 @@ export default function Home() {
 
 	useEffect(() => {
 		const fetchNFTs = async () => {
-			const provider = new ethers.BrowserProvider(window.ethereum);
-			// const signer = provider.getSigner();
-			const contract = new ethers.Contract(contractAddress, MintGramNFT, provider);
+			try {
+				const provider = new ethers.BrowserProvider(window.ethereum);
+				// const signer = provider.getSigner();
+				const contract = new ethers.Contract(contractAddress, MintGramNFT, provider);
 
-			const [tokenIds, uris] = await contract.getAllNFTs();
+				const [tokenIds, uris] = await contract.getAllNFTs();
 
-			const nftURIs = await Promise.all(
-				tokenIds.map(async (tokenId, index) => {
-					const response = await fetch(uris[index]);
-					const metadata = await response.json();
-					return { tokenId, metadata };
-				})
-			);
+				const nftURIs = await Promise.all(
+					tokenIds.map(async (tokenId, index) => {
+						const response = await fetch(uris[index]);
+						const metadata = await response.json();
+						return { tokenId, metadata };
+					})
+				);
 
-			setNfts(nftURIs);
-			console.log(nftURIs);
+				setNfts(nftURIs);
+				console.log(nftURIs);
+			} catch (error) {
+				console.log(error);
+			}
 		};
 
 		fetchNFTs();
@@ -139,21 +143,6 @@ export default function Home() {
 										{loadingRequest && <Spinner />}
 										<span className='mx-1'>Upload</span>
 									</button>
-
-									{/* <div className='pb-4'>
-										<label
-											htmlFor='first_name'
-											className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-											First name
-										</label>
-										<input
-											type='text'
-											id='first_name'
-											className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
-											placeholder='John'
-											required
-										/>
-									</div> */}
 								</form>
 							</div>
 
@@ -172,23 +161,25 @@ export default function Home() {
 					<div className='max-w-5xl px-4 xl:px-0 py-24 mx-auto'>
 						<div className='max-w-3xl mb-10 lg:mb-14'>
 							<h2 className='text-white font-semibold text-2xl md:text-4xl md:leading-tight'>Explore</h2>
-							{/* <p className='mt-1 text-neutral-400'>
-									Global brands see measurable success when they collaborate with us. From higher conversion
-									and payment approval rates to faster processing speeds. Discover their stories here.
-								</p> */}
+							{/* <p className='mt-1 text-neutral-400'></p> */}
 						</div>
 
 						<div className=''>
 							<div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
 								{nfts.map((nft, index) => (
-									<img className='w-full object-cover' src={nft.metadata.image} alt={nft.tokenId} />
+									<img
+										key={index}
+										className='w-full object-cover'
+										src={nft.metadata.image}
+										alt={nft.tokenId}
+									/>
 								))}
 
-								<img
+								{/* <img
 									className='w-full object-cover'
 									src='https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
-									alt='Image Description'
-								/>
+									alt='Test'
+								/> */}
 							</div>
 						</div>
 					</div>
