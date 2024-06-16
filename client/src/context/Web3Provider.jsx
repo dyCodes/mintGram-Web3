@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { contractAddress } from '../../config/contract';
-import PicNftMinter from '../PicNftMinter.json';
+import MintGramNFT from '../MintGramNFT.json';
 
 const Web3Context = createContext();
 
@@ -31,24 +31,9 @@ export const Web3Provider = ({ children }) => {
 		setAccounts(accounts);
 	};
 
-	const getProvider = async () => {
-		if (!window.ethereum) return;
-		const provider = new ethers.BrowserProvider(window.ethereum);
-		return provider;
-	};
-
-	const getContract = async () => {
-		if (!window.ethereum) return;
-		const provider = new ethers.BrowserProvider(window.ethereum);
-
-		const signer = provider.getSigner();
-		const contract = new ethers.Contract(contractAddress, PicNftMinter, signer);
-		return contract;
-	};
-
 	return (
 		<Web3Context.Provider
-			value={{ accounts, setAccounts, isConnected, getProvider, getContract, connectWallet }}>
+			value={{ accounts, setAccounts, isConnected, contractAddress, MintGramNFT, connectWallet }}>
 			{children}
 		</Web3Context.Provider>
 	);

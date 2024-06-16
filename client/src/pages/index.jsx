@@ -1,20 +1,36 @@
 import HomeLayout from '@/components/HomeLayout';
 import { Spinner } from '@/components/Layout/Spinner';
 import { useWeb3 } from '@/context/Web3Provider';
+import { ethers } from 'ethers';
 import { uploadMetadata, uploadToPinata } from '@/utils/ipfs';
 import { mintNFT } from '@/utils/mintNFT';
 import { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 
 export default function Home() {
-	// const { getProvider } = useWeb3();
+	const { contractAddress, MintGramNFT } = useWeb3();
 	const [nfts, setNfts] = useState([]);
 	const [uploadedImage, setUploadedImage] = useState(null);
 	const [loadingRequest, setLoadingRequest] = useState(false);
 
 	useEffect(() => {
 		const fetchNFTs = async () => {
-			//
+			const provider = new ethers.BrowserProvider(window.ethereum);
+			// const signer = provider.getSigner();
+			const contract = new ethers.Contract(contractAddress, MintGramNFT, provider);
+
+			const [tokenIds, uris] = await contract.getAllNFTs();
+
+			const nftURIs = await Promise.all(
+				tokenIds.map(async (tokenId, index) => {
+					const response = await fetch(uris[index]);
+					const metadata = await response.json();
+					return { tokenId, metadata };
+				})
+			);
+
+			setNfts(nftURIs);
+			console.log(nftURIs);
 		};
 
 		fetchNFTs();
@@ -33,7 +49,7 @@ export default function Home() {
 
 			let metaData = JSON.stringify({
 				name: name,
-				description: 'A NFT minted on PicMint!',
+				description: 'A NFT minted on MintGram!',
 				image: imageURI,
 			});
 
@@ -164,74 +180,15 @@ export default function Home() {
 
 						<div className=''>
 							<div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
-								<div className='space-y-2'>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1668906093328-99601a1aa584?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=986&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1567016526105-22da7c13161a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
-										alt='Image Description'
-									/>
-								</div>
-								<div className='space-y-2'>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1668584054131-d5721c515211?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1664574654529-b60630f33fdb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1669824774762-65ddf29bee56?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
-										alt='Image Description'
-									/>
-								</div>
-								<div className='space-y-2'>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1586232702178-f044c5f4d4b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1542125387-c71274d94f0a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
-										alt='Image Description'
-									/>
-								</div>
-								<div className='space-y-2'>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1668869713519-9bcbb0da7171?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1668584054035-f5ba7d426401?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3465&q=80'
-										alt='Image Description'
-									/>
-									<img
-										className='w-full object-cover'
-										src='https://images.unsplash.com/photo-1668863699009-1e3b4118675d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3387&q=80'
-										alt='Image Description'
-									/>
-								</div>
+								{nfts.map((nft, index) => (
+									<img className='w-full object-cover' src={nft.metadata.image} alt={nft.tokenId} />
+								))}
+
+								<img
+									className='w-full object-cover'
+									src='https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
+									alt='Image Description'
+								/>
 							</div>
 						</div>
 					</div>
